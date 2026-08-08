@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أسعار التوصيل — ZRexpress</title>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Alexandria', 'Segoe UI', Arial, sans-serif;
+    background: #f5f5f5;
+    color: #0D0D0D;
+    direction: rtl;
+  }
+
+  /* ====== HERO ====== */
+  .hero { background: #0D0D0D; padding: 32px 24px 26px; text-align: center; }
+  .user-logo-main { max-height: 84px; max-width: 280px; object-fit: contain; display: block; margin: 0 auto 14px; }
+  .hero-title { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: .3px; }
+  .hero-tagline { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.75); margin: 8px 0 10px; }
+  .zr-hero-logo { max-height: 40px; max-width: 170px; object-fit: contain; filter: brightness(0) invert(1); }
+
+  /* ====== STATS BAR ====== */
+  .stats-bar { background: #FFD600; padding: 11px 24px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .stat { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #0D0D0D; font-size: 14px; }
+  .stat-icon { font-size: 17px; }
+
+  /* ====== SEARCH ====== */
+  .wrap { max-width: 1000px; margin: 28px auto 36px; padding: 0 16px; }
+  .section-title { font-size: 19px; font-weight: 700; color: #0D0D0D; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .section-title::before { content: ''; display: inline-block; width: 5px; height: 22px; background: #FFD600; border-radius: 3px; }
+
+  .search-card {
+    background: #fff; border-radius: 16px; border: 1px solid #e8e8e8;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.09); padding: 20px;
+  }
+  .search-row { position: relative; }
+  .search-input {
+    width: 100%; font-family: inherit; font-size: 16px; font-weight: 600;
+    padding: 15px 48px 15px 16px; border: 2px solid #e8e8e8; border-radius: 12px;
+    background: #fff; color: #0D0D0D; outline: none; transition: border-color .15s;
+    min-height: 52px;
+  }
+  .search-input:focus { border-color: #FFD600; box-shadow: 0 0 0 3px rgba(255,214,0,.28); }
+  .search-icon { position: absolute; inset-inline-end: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #888; pointer-events: none; }
+  .hint { font-size: 12.5px; color: #7D7A75; margin-top: 10px; line-height: 1.6; }
+  .hint b { color: #0D0D0D; }
+
+  /* suggestions */
+  .suggest { list-style: none; margin-top: 12px; }
+  .suggest:empty { margin-top: 0; }
+  .suggest li { padding: 10px 12px; border: 1px solid #f0f0f0; border-radius: 10px; margin-bottom: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; }
+  .suggest li:last-child { margin-bottom: 0; }
+  .suggest li:hover, .suggest li.active { background: #fffbea; border-color: #FFD600; }
+  .suggest .badge { background: #0D0D0D; color: #FFD600; font-weight: 800; font-size: 12px; min-width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .suggest .fr { color: #7D7A75; font-weight: 600; font-size: 12.5px; }
+
+  /* ====== RESULT ====== */
+  .result { margin-top: 18px; display: none; }
+  .result.show { display: block; }
+  .result-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #0D0D0D; border-radius: 12px 12px 0 0; }
+  .result-num { background: #FFD600; color: #0D0D0D; font-weight: 800; font-size: 17px; width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .result-name { color: #fff; font-size: 17px; font-weight: 700; line-height: 1.3; }
+  .result-fr { color: #aaa; font-size: 12.5px; font-weight: 600; }
+  .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #e8e8e8; border: 1px solid #e8e8e8; border-top: none; border-radius: 0 0 12px 12px; overflow: hidden; }
+  .price-box { background: #fff; padding: 20px 16px; text-align: center; }
+  .price-box .label { font-size: 13px; font-weight: 700; color: #7D7A75; display: flex; align-items: center; justify-content: center; gap: 7px; }
+  .price-box .value { font-size: 27px; font-weight: 800; margin-top: 10px; direction: ltr; }
+  .price-box .value span { font-size: 14px; font-weight: 700; color: #7D7A75; }
+  .price-box.office .value { color: #0D0D0D; }
+  .price-box.home { background: #fffbea; }
+  .price-box.home .value { color: #b8a000; }
+  .price-box .na { font-size: 16px; font-weight: 700; color: #E56458; margin-top: 12px; }
+  .empty { margin-top: 16px; padding: 16px; background: #FCE9E7; border: 1px solid #f3ccc7; border-radius: 12px; font-size: 14px; font-weight: 600; color: #a8352a; display: none; }
+  .empty.show { display: block; }
+
+  /* ====== FOOTER ====== */
+  .footer { background: #0D0D0D; color: #aaa; text-align: center; padding: 22px 20px; font-size: 13px; }
+  .footer span { color: #FFD600; font-weight: 700; }
+  .footer-brand { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
+  .footer-user-logo { max-height: 36px; max-width: 130px; object-fit: contain; filter: brightness(0) invert(1); }
+  .footer-zr-logo { max-height: 26px; max-width: 110px; object-fit: contain; filter: brightness(0) invert(1); }
+
+  @media (max-width: 560px) {
+    .stats-bar { gap: 18px; }
+    .price-grid { grid-template-columns: 1fr; }
+    .price-box .value { font-size: 24px; }
+    .hero-title { font-size: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img src="https://h.top4top.io/p_3860fi1qt1.png" alt="شعار العلامة" class="user-logo-main">
+  <div class="hero-title">أسعار التوصيل إلى كل الولايات</div>
+  <div class="hero-tagline">اكتب اسم ولايتك بالرقم أو بالعربية أو بالفرنسية</div>
+  <img src="https://swwim-seven.vercel.app/ZR%20Black%20logo.svg" alt="ZR Express" class="zr-hero-logo">
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><span class="stat-icon">📍</span><span>58 ولاية</span></div>
+  <div class="stat"><span class="stat-icon">🏢</span><span>توصيل للمكتب</span></div>
+  <div class="stat"><span class="stat-icon">🏠</span><span>توصيل للمنزل</span></div>
+  <div class="stat"><span class="stat-icon">💰</span><span>الدفع عند الاستلام</span></div>
+</div>
+
+<section class="wrap">
+  <h2 class="section-title">احسب سعر التوصيل</h2>
+  <div class="search-card">
+    <div class="search-row">
+      <input id="q" class="search-input" type="text" autocomplete="off" placeholder="مثال: 35 أو بومرداس أو BOUMERDES" aria-label="ابحث عن ولايتك">
+      <span class="search-icon">🔍</span>
+    </div>
+    <p class="hint">اكتب <b>رقم الولاية</b> (35) أو <b>اسمها بالعربية</b> (بومرداس) أو <b>بالفرنسية</b> (BOUMERDES) وسيظهر لك السعر مباشرة.</p>
+    <ul id="suggest" class="suggest"></ul>
+
+    <div id="result" class="result">
+      <div class="result-head">
+        <div class="result-num" id="rNum">35</div>
+        <div>
+          <div class="result-name" id="rName">بومرداس</div>
+          <div class="result-fr" id="rFr">BOUMERDES</div>
+        </div>
+      </div>
+      <div class="price-grid">
+        <div class="price-box office">
+          <div class="label"><span>🏢</span> التوصيل إلى مكتب الشركة</div>
+          <div id="rOffice"></div>
+        </div>
+        <div class="price-box home">
+          <div class="label"><span>🏠</span> التوصيل إلى المنزل</div>
+          <div id="rHome"></div>
+        </div>
+      </div>
+    </div>
+    <div id="empty" class="empty">لم نجد ولاية بهذا الاسم. تحقق من الكتابة أو اكتب رقم الولاية.</div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-brand">
+    <img src="https://h.top4top.io/p_3860fi1qt1.png" alt="شعارنا" class="footer-user-logo">
+    <img src="https://swwim-seven.vercel.app/ZR%20Black%20logo.svg" alt="ZR Express" class="footer-zr-logo">
+  </div>
+  الأسعار بالدينار الجزائري <span>DA</span> · التوصيل عبر <span>ZRexpress</span> إلى كامل التراب الوطني
+</footer>
+
+<script>
+/* قاعدة البيانات: [الرقم, العربية, الفرنسية, سعر المكتب, السعر المنزلي, مرادفات] */
+const W = [
+ [1,"أدرار","Adrar",1070,1450,""],
+ [2,"الشلف","Chlef",570,850,"chelef"],
+ [3,"الأغواط","Laghouat",670,950,""],
+ [4,"أم البواقي","Oum El Bouaghi",570,800,"oum bouaghi أم البواقي"],
+ [5,"باتنة","Batna",570,900,""],
+ [6,"بجاية","Bejaia",570,900,"bgayet"],
+ [7,"بسكرة","Biskra",670,950,""],
+ [8,"بشار","Bechar",770,1200,"بشّار"],
+ [9,"البليدة","Blida",520,700,""],
+ [10,"البويرة","Bouira",570,750,""],
+ [11,"تمنراست","Tamanrasset",1270,1650,"تامنغست tamanghasset"],
+ [12,"تبسة","Tebessa",570,950,""],
+ [13,"تلمسان","Tlemcen",570,900,""],
+ [14,"تيارت","Tiaret",520,850,""],
+ [15,"تيزي وزو","Tizi Ouzou",570,750,"tiziouzou"],
+ [16,"الجزائر","Alger",520,600,"algiers العاصمة الجزائرالعاصمة"],
+ [17,"الجلفة","Djelfa",670,950,""],
+ [18,"جيجل","Jijel",570,900,""],
+ [19,"سطيف","Setif",570,850,"stif"],
+ [20,"سعيدة","Saida",620,900,""],
+ [21,"سكيكدة","Skikda",570,900,""],
+ [22,"سيدي بلعباس","Sidi Bel Abbes",570,900,"sidi belabbes"],
+ [23,"عنابة","Annaba",570,900,""],
+ [24,"قالمة","Guelma",570,850,""],
+ [25,"قسنطينة","Constantine",570,850,""],
+ [26,"المدية","Medea",570,850,""],
+ [27,"مستغانم","Mostaganem",570,900,""],
+ [28,"المسيلة","M'Sila",570,900,"msila"],
+ [29,"معسكر","Mascara",570,900,""],
+ [30,"ورقلة","Ouargla",670,1000,""],
+ [31,"وهران","Oran",570,850,""],
+ [32,"البيض","El Bayadh",670,1100,"البيّض"],
+ [33,"إليزي","Illizi",null,null,"iliizi"],
+ [34,"برج بوعريريج","Bordj Bou Arreridj",570,850,"bba"],
+ [35,"بومرداس","Boumerdes",420,500,""],
+ [36,"الطارف","El Tarf",570,900,""],
+ [37,"تندوف","Tindouf",null,null,""],
+ [38,"تيسمسيلت","Tissemsilt",520,900,""],
+ [39,"الوادي","El Oued",670,1000,"eloued"],
+ [40,"خنشلة","Khenchela",500,900,""],
+ [41,"سوق أهراس","Souk Ahras",570,900,"سوق اهراس"],
+ [42,"تيبازة","Tipaza",570,800,"tipasa"],
+ [43,"ميلة","Mila",570,900,""],
+ [44,"عين الدفلى","Ain Defla",570,900,"عين الدفلة"],
+ [45,"النعامة","Naama",670,1200,""],
+ [46,"عين تموشنت","Ain Temouchent",570,900,""],
+ [47,"غرداية","Ghardaia",670,950,""],
+ [48,"غليزان","Relizane",570,900,"غيليزان"],
+ [49,"تيميمون","Timimoun",1070,1450,"timimoune"],
+ [50,"برج باجي مختار","Bordj Badji Mokhtar",null,null,""],
+ [51,"أولاد جلال","Ouled Djellal",670,950,""],
+ [52,"بني عباس","Beni Abbes",1070,1450,""],
+ [53,"عين صالح","In Salah",1270,1650,"insalah"],
+ [54,"عين قزام","In Guezzam",null,1650,"inguezzam"],
+ [55,"تقرت","Touggourt",670,950,"تقرّت"],
+ [56,"جانت","Djanet",null,null,""],
+ [57,"المغير","El Meghaier",null,950,"elmghaier"],
+ [58,"المنيعة","El Menia",670,1100,"elmenia المنيع"]
+];
+
+function norm(s){
+  return String(s)
+    .toLowerCase()
+    .replace(/[\u064B-\u0652\u0640]/g,"")
+    .replace(/[أإآٱ]/g,"ا").replace(/[ى]/g,"ي").replace(/[ؤ]/g,"و").replace(/[ئ]/g,"ي").replace(/ة/g,"ه")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/^(el|al|ال)\s*/,"")
+    .replace(/[^0-9a-z\u0621-\u064A]/g,"");
+}
+
+const money = n => n.toLocaleString("en-US");
+
+function keys(w){
+  return [String(w[0]), w[1], w[2], ...(w[5]? w[5].split(/\s{1,}/):[])]
+    .filter(Boolean).map(norm).filter(k=>k.length);
+}
+W.forEach(w => w.k = keys(w));
+
+const q = document.getElementById("q");
+const sug = document.getElementById("suggest");
+const res = document.getElementById("result");
+const emptyBox = document.getElementById("empty");
+
+function priceHtml(v){
+  return v!=null
+    ? `<div class="value">${money(v)} <span>DA</span></div>`
+    : `<div class="na">غير متوفر</div>`;
+}
+
+function show(w){
+  document.getElementById("rNum").textContent = w[0];
+  document.getElementById("rName").textContent = w[1];
+  document.getElementById("rFr").textContent = w[2];
+  document.getElementById("rOffice").innerHTML = priceHtml(w[3]);
+  document.getElementById("rHome").innerHTML = priceHtml(w[4]);
+  res.classList.add("show");
+  emptyBox.classList.remove("show");
+  sug.innerHTML = "";
+}
+
+function find(term){
+  const t = norm(term);
+  if(!t) return [];
+  const exact = W.filter(w => w.k.some(k => k === t));
+  if(exact.length) return exact;
+  const starts = W.filter(w => w.k.some(k => k.startsWith(t)));
+  if(starts.length) return starts;
+  return W.filter(w => w.k.some(k => k.includes(t)));
+}
+
+function render(){
+  const val = q.value.trim();
+  if(!val){ sug.innerHTML=""; res.classList.remove("show"); emptyBox.classList.remove("show"); return; }
+  const m = find(val);
+  if(m.length === 0){ sug.innerHTML=""; res.classList.remove("show"); emptyBox.classList.add("show"); return; }
+  if(m.length === 1){ show(m[0]); return; }
+  res.classList.remove("show"); emptyBox.classList.remove("show");
+  sug.innerHTML = m.slice(0,6).map(w =>
+    `<li data-n="${w[0]}"><span class="badge">${w[0]}</span><span>${w[1]}</span><span class="fr">${w[2]}</span></li>`
+  ).join("");
+}
+
+q.addEventListener("input", render);
+sug.addEventListener("click", e => {
+  const li = e.target.closest("li"); if(!li) return;
+  const w = W.find(x => x[0] == li.dataset.n);
+  q.value = w[1]; show(w);
+});
+q.addEventListener("keydown", e => {
+  if(e.key === "Enter"){
+    const m = find(q.value.trim());
+    if(m.length){ q.value = m[0][1]; show(m[0]); }
+  }
+});
+</script>
+</body>
+</html>
