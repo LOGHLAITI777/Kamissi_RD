@@ -170,6 +170,14 @@ body { font-family: 'Cairo', sans-serif; background: #fafafa; color: #000; }
 .size-btn:hover { transform: scale(1.07); }
 .size-btn.active { transform: scale(1.11); filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); }
 
+/* ✅ زر المقاس المعطّل (غير متوفر في هذه النوعية) */
+.size-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+.size-btn:disabled:hover { transform: none; }
+
 .quantity-section { text-align: center; margin: 8px 0 20px; }
 .quantity-control { display: inline-flex; align-items: center; gap: 10px; }
 .quantity-btn { width: 40px; height: 40px; border-radius: 10px; background: #f0f0f0; border: 1px solid #ddd; font-size: 20px; cursor: pointer; font-family: 'Cairo', sans-serif; transition: background 0.15s; }
@@ -276,11 +284,11 @@ input[type="radio"] { accent-color: #000; width: 18px; height: 18px; }
 <div class="quality-wrapper" id="qualityWrapper">
   <button class="quality-btn active" data-quality="1" type="button">
     <span class="quality-main">النوعية الأولى</span>
-    <span class="quality-sub">(موشتي)</span>
+    <span class="quality-sub">(موتيف)</span>
   </button>
   <button class="quality-btn" data-quality="2" type="button">
     <span class="quality-main">النوعية الثانية</span>
-    <span class="quality-sub">(موتيف)</span>
+    <span class="quality-sub">(موشتي)</span>
   </button>
 </div>
 
@@ -290,7 +298,7 @@ input[type="radio"] { accent-color: #000; width: 18px; height: 18px; }
   <button class="slider-btn next" id="nextBtn" aria-label="التالي" type="button">&#9654;</button>
   <div class="slider">
     <img id="mainSliderImg"
-         src="https://over-size.vercel.app/5.jpg"
+         src="7 (1).jpg"
          alt="قميص أثر"
          loading="eager"
          width="500" height="500">
@@ -314,7 +322,7 @@ input[type="radio"] { accent-color: #000; width: 18px; height: 18px; }
 <!-- اختيار المقاس -->
 <div class="section-label">يرجى اختيار المقاس المناسب</div>
 <div class="sizes" id="sizesContainer">
-  <button class="size-btn" data-size="52" type="button">52</button>
+  <button class="size-btn" data-size="52" id="size52Btn" type="button">52</button>
   <button class="size-btn" data-size="54" type="button">54</button>
   <button class="size-btn" data-size="56" type="button">56</button>
   <button class="size-btn" data-size="58" type="button">58</button>
@@ -468,85 +476,85 @@ input[type="radio"] { accent-color: #000; width: 18px; height: 18px; }
   var QUALITY_TYPES = {
     1: {
       name: 'النوعية الأولى',
-      sub: '(موشتي)',
-      colors: [
-        { id: 'q1-azraq-malaki',  label: 'أزرق ملكي',   hex: '#1a2a4a', textColor: '#fff', images: [
-          '1 (1).jpg',
-          '1 (2).jpg',
-          '1 (3).jpg',
-          '1 (4).jpg'
-        ]},
-        { id: 'q1-blue-navy',   label: 'بلو نوي',     hex: '#0f1e3d', textColor: '#fff', images: [
-          '2 (1).jpg',
-          '2 (2).jpg',
-          '2 (3).jpg',
-          '2 (4).jpg'
-        ]},
-        { id: 'q1-akhdar-dakn', label: 'أخضر داكن',   hex: '#1a3a2a', textColor: '#fff', images: [
-          '3 (1).jpg',
-          '3 (2).jpg',
-          '3 (3).jpg',
-          '3 (4).jpg'
-        ]},
-        { id: 'q1-banafsaji',   label: 'بنفسجي داكن', hex: '#3a1a4a', textColor: '#fff', images: [
-          '4 (1).jpg',
-          '4 (2).jpg',
-          '4 (3).jpg',
-          '4 (4).jpg'
-        ]},
-        { id: 'q1-ramadi-dakn', label: 'رمادي داكن',  hex: '#3a3a3a', textColor: '#fff', images: [
-          '5 (1).jpg',
-          '5 (2).jpg',
-          '5 (3).jpg',
-          '5 (4).jpg'
-        ]},
-        { id: 'q1-chokola',  label: 'شوكولا',    hex: '#3a2418', textColor: '#fff', images: [
-          '6 (1).jpg',
-          '6 (2).jpg',
-          '6 (3).jpg',
-          '6 (4).jpg'
-        ]}
-      ]
-    },
-    2: {
-      name: 'النوعية الثانية',
       sub: '(موتيف)',
       colors: [
-        { id: 'q2-mocha',        label: 'موكا',        hex: '#B5887C', textColor: '#fff', images: [
+        { id: 'q1-mocha',        label: 'موكا',        hex: '#B5887C', textColor: '#fff', images: [
           '7 (1).jpg',
           '7 (2).jpg',
           '7 (3).jpg',
           '7 (4).jpg'
         ]},
-        { id: 'q2-aswad',        label: 'أسود',        hex: '#000000', textColor: '#fff', images: [
+        { id: 'q1-aswad',        label: 'أسود',        hex: '#000000', textColor: '#fff', images: [
           '8 (1).jpg',
           '8 (2).jpg',
           '8 (3).jpg',
           '8 (4).jpg'
         ]},
-        { id: 'q2-ramadi-fatih', label: 'رمادي فاتح',  hex: '#AEB8BF', textColor: '#000', images: [
+        { id: 'q1-ramadi-fatih', label: 'رمادي فاتح',  hex: '#AEB8BF', textColor: '#000', images: [
           '9 (1).jpg',
           '9 (2).jpg',
           '9 (3).jpg',
           '9 (4).jpg'
         ]},
-        { id: 'q2-akhdar-zayti', label: 'أخضر زيتي',   hex: '#1E211A', textColor: '#fff', images: [
+        { id: 'q1-akhdar-zayti', label: 'أخضر زيتي',   hex: '#1E211A', textColor: '#fff', images: [
           '10 (1).jpg',
           '10 (2).jpg',
           '10 (3).jpg',
           '10 (4).jpg'
         ]},
-        { id: 'q2-beige',        label: 'باج',         hex: '#B7AEA0', textColor: '#000', images: [
+        { id: 'q1-beige',        label: 'باج',         hex: '#B7AEA0', textColor: '#000', images: [
           '11 (1).jpg',
           '11 (2).jpg',
           '11 (3).jpg',
           '11 (4).jpg'
         ]},
-        { id: 'q2-fairouzi',       label: 'فيروزي',        hex: '#677B7A', textColor: '#fff', images: [
+        { id: 'q1-fairouzi',     label: 'فيروزي',      hex: '#677B7A', textColor: '#fff', images: [
           '12 (1).jpg',
           '12 (2).jpg',
           '12 (3).jpg',
           '12 (4).jpg'
+        ]}
+      ]
+    },
+    2: {
+      name: 'النوعية الثانية',
+      sub: '(موشتي)',
+      colors: [
+        { id: 'q2-azraq-malaki', label: 'أزرق ملكي',   hex: '#1a2a4a', textColor: '#fff', images: [
+          '1 (1).jpg',
+          '1 (2).jpg',
+          '1 (3).jpg',
+          '1 (4).jpg'
+        ]},
+        { id: 'q2-blue-navy',    label: 'بلو نوي',     hex: '#0f1e3d', textColor: '#fff', images: [
+          '2 (1).jpg',
+          '2 (2).jpg',
+          '2 (3).jpg',
+          '2 (4).jpg'
+        ]},
+        { id: 'q2-akhdar-dakn',  label: 'أخضر داكن',   hex: '#1a3a2a', textColor: '#fff', images: [
+          '3 (1).jpg',
+          '3 (2).jpg',
+          '3 (3).jpg',
+          '3 (4).jpg'
+        ]},
+        { id: 'q2-banafsaji',    label: 'بنفسجي داكن', hex: '#3a1a4a', textColor: '#fff', images: [
+          '4 (1).jpg',
+          '4 (2).jpg',
+          '4 (3).jpg',
+          '4 (4).jpg'
+        ]},
+        { id: 'q2-ramadi-dakn',  label: 'رمادي داكن',  hex: '#3a3a3a', textColor: '#fff', images: [
+          '5 (1).jpg',
+          '5 (2).jpg',
+          '5 (3).jpg',
+          '5 (4).jpg'
+        ]},
+        { id: 'q2-chokola',      label: 'شوكولا',      hex: '#3a2418', textColor: '#fff', images: [
+          '6 (1).jpg',
+          '6 (2).jpg',
+          '6 (3).jpg',
+          '6 (4).jpg'
         ]}
       ]
     }
@@ -665,12 +673,31 @@ input[type="radio"] { accent-color: #000; width: 18px; height: 18px; }
       b.classList.toggle('active', parseInt(b.dataset.quality, 10) === quality);
     });
 
+    // ✅ زر 52: يبقى ظاهرًا لكنه معطّل في نوعية "موشتي" (quality 2)
+    var size52Btn = $('size52Btn');
+    if (size52Btn) {
+      if (quality === 2) {
+        // موشتي: عطّل الزر
+        size52Btn.disabled = true;
+        size52Btn.classList.remove('active');
+        // إذا كان 52 محدداً، ألغِ تحديده
+        if (selectedSize === '52') {
+          selectedSize = null;
+        }
+      } else {
+        // موتيف: أعد تفعيل الزر
+        size52Btn.disabled = false;
+      }
+    }
+
     buildColorGallery();
     loadColorImages(0, 0);
     updateSummary();
   }
 
   function selectSize(btn) {
+    // ✅ تجاهل الأزرار المعطّلة
+    if (btn.disabled) return;
     document.querySelectorAll('.size-btn').forEach(function (b) { b.classList.remove('active'); });
     btn.classList.add('active');
     selectedSize = btn.dataset.size;
